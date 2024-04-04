@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import MovieCard from './MovieCard/MovieCard'
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import ProductListPage from './ProductList/ProductListPage';
 
 
 
@@ -12,20 +12,38 @@ import Button from 'react-bootstrap/Button';
 const AllMovies = () => {
   const [movieData, setMovieData] = useState([]);
   const [search, setSearch] = useState("");
+  const [ProjectObj, setProjectObj] = useState({});
+  const [singleProduct, setSingleProduct] = useState(false);
+
   console.log(search);
 
-  const handleClick = () => {
-    alert("found the Movie!")
-    setSearch("");
-  }
+
+  const handleClick = (id) => {
+
+    // Find the movie object with the matching ID
+    const selectedMovie = movieData.find(movie => movie.id === id);
+
+    // Set the selected movie object as projectObj
+    setProjectObj(selectedMovie);
+
+    // Set Single Product to true 
+    setSingleProduct(true);
+  };
+  console.log("single movie", ProjectObj);
+
+
+  //FETCH MOVIE FROM LOCAL STORAGE//
 
   const FetchMovie = () => {
-
 
     let movies = JSON.parse(localStorage.getItem("movies") || []);
     return movies;
 
   }
+
+
+  // USEFFECT FOR FETCHING THE DATA FROM THE LOCAL STORAGE TO CHA
+
   useEffect(() => {
     // const Data = FetchMovie();
     setMovieData(FetchMovie());
@@ -34,10 +52,12 @@ const AllMovies = () => {
 
   console.log(movieData);
 
+  //
+
   return (
     <div>
       <h1 className='uppercase font-bold text-xl mx-[2rem] mt-[2rem] mb-[2rem]'>All movie</h1>
-     
+
       <div className='xl:flex xl:flex-row flex-col justify-center items-center gap-[4rem] mb-[2rem]'>
         <div>
           <div>
@@ -56,25 +76,36 @@ const AllMovies = () => {
 
       {/* // STYLING THE MOVIE CARD */}
 
-      <div className='grid xl:grid-cols-4 gap-[2rem] xl:px-[1rem] xl:py-[1rem] xl:mr-[4rem] '>
+      <div>
+        {!singleProduct ? (<div className='grid xl:grid-cols-4 gap-[2rem] xl:px-[1rem] xl:py-[1rem] xl:mr-[4rem] '>
 
-        {movieData.filter((movies) => {
-          return search.toLowerCase() === "" ? movies :
-            movies.title.toLowerCase().includes(search);
+          {/* // USING FILTER TO FIND MOVIE NAME */}
 
-        }).map((movies, index) => (
+          {movieData.filter((movies) => {
+            return search.toLowerCase() === "" ? movies :
+              movies.title.toLowerCase().includes(search);
 
-          <MovieCard
-            key={index}
-            title={movies.title}
-            description={movies.description}
-            posterUrl={movies.posterUrl}
-            rating={movies.rating}
+          }).map((movies, id) => (
 
-          />
-        ))}
+            <MovieCard
+              key={id}
+              title={movies.title}
+              description={movies.description}
+              posterUrl={movies.posterUrl}
+              rating={movies.rating}
+              func={() =>
+                handleClick(movies.id)
+              }
 
+            />
+          ))}
+
+        </div>) : (<ProductListPage
+          ProductPrevPage={ProjectObj}
+          toggleScreen={setSingleProduct} />)}
       </div>
+
+
     </div>
   )
 }

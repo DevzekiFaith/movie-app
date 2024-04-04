@@ -23,7 +23,11 @@ const AddMovies = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let movies = JSON.parse(localStorage.getItem("movies")) || [];
     const newMovies = {
+      id: movies.length + 1,
+      // id: 1,
       title: title,
       description: description,
       posterUrl: posterUrl,
@@ -35,7 +39,7 @@ const AddMovies = () => {
     //1.  GET LOCAL localStorage
     // 2. CHECK IF LOCAL STORAGE IS EMPTY, if it, then create AN EMPTY ARRAY
 
-    let movies = JSON.parse(localStorage.getItem("movies")) || [];
+    // let movies = JSON.parse(localStorage.getItem("movies")) || [];
 
     //3.  ADD NEW MOVIE TO THE ARRAY
 
