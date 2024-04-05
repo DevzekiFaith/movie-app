@@ -12,12 +12,19 @@ import ProductListPage from './ProductList/ProductListPage';
 const AllMovies = () => {
   const [movieData, setMovieData] = useState([]);
   const [search, setSearch] = useState("");
+
+  // CREATING A STATE THAT MANAGES ALL MOVIES
+
   const [ProjectObj, setProjectObj] = useState({});
+
+  // SET TO TOGGLE BETWEEN THE MOVIE CARD TO SINGLE PAGE
+
   const [singleProduct, setSingleProduct] = useState(false);
 
   console.log(search);
 
-
+  // HANDLECLICK FUNCTION FOR HANDLING THE MOVIE CARD
+  
   const handleClick = (id) => {
 
     // Find the movie object with the matching ID
@@ -102,6 +109,9 @@ const AllMovies = () => {
 
         </div>) : (<ProductListPage
           ProductPrevPage={ProjectObj}
+
+          // TOGGLE FROM SINGLE PAGE TO ALL MOVIE PAGE
+
           toggleScreen={setSingleProduct} />)}
       </div>
 
